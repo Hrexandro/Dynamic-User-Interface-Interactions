@@ -55,7 +55,7 @@ nextButton.addEventListener('click',()=>{
 })
 
 function displayPreviousAndNextImage () {
-    let previousImageFrame = document.getElementById('next-image-frame')
+    let previousImageFrame = document.getElementById('previous-image-frame')
     let nextImageFrame = document.getElementById('next-image-frame')
     if (document.getElementById('next-image')){
         document.getElementById('next-image').remove()

@@ -7,22 +7,36 @@ function removeAllChildren(element) {
     }
 }
 
-function updateImage (imageNumber){
-  let image = `images/${images[imageNumber]}`
-  const frame = document.getElementById("frame")
-  removeAllChildren(frame)
-  let imageElement = document.createElement('img')
-  imageElement.setAttribute('id', 'current-image')
-  imageElement.setAttribute('src', image)
-  frame.appendChild(imageElement)
+let firstTime = true
 
-  displayPreviousAndNextImage()
+function updateImage (imageNumber){
+    document.getElementById('next-image').setAttribute('class', 'moved-next-image')
+
+    function displayNewImageInFrame () {
+        displayPreviousAndNextImage()
+        let image = `images/${images[imageNumber]}`
+        const frame = document.getElementById("frame")
+        removeAllChildren(frame)
+        let imageElement = document.createElement('img')
+        imageElement.setAttribute('id', 'current-image')
+        imageElement.setAttribute('src', image)
+        frame.appendChild(imageElement)
+    }
+
+    if (firstTime){
+        displayNewImageInFrame()
+    } else {
+        setTimeout(function() {
+            displayNewImageInFrame ()
+      }, 900);
+    }
+    firstTime = false
 }
 
 let currentlyDisplayedImage = 0
 const images = ['1.png','2.png','3.png','4.png','5.png']
 
-updateImage(currentlyDisplayedImage)
+
 
 const previousButton = document.getElementById('previous')
 const nextButton = document.getElementById('next')
@@ -41,6 +55,8 @@ nextButton.addEventListener('click',()=>{
 })
 
 function displayPreviousAndNextImage () {
+    let previousImageFrame = document.getElementById('next-image-frame')
+    let nextImageFrame = document.getElementById('next-image-frame')
     if (document.getElementById('next-image')){
         document.getElementById('next-image').remove()
     }
@@ -56,7 +72,7 @@ function displayPreviousAndNextImage () {
     } else {
         previousImage.setAttribute('src', `images/${images[currentlyDisplayedImage-1]}`)
     }
-    document.getElementById('images').appendChild(previousImage)
+    previousImageFrame.appendChild(previousImage)
     
     const nextImage = document.createElement('img')
     nextImage.setAttribute('id', 'next-image')
@@ -68,9 +84,15 @@ function displayPreviousAndNextImage () {
     } else {
         nextImage.setAttribute('src', `images/${images[currentlyDisplayedImage+1]}`)
     }
-    document.getElementById('images').appendChild(nextImage)
+    nextImageFrame.appendChild(nextImage)
+
+    // setTimeout(function() {
+        // nextImage.setAttribute('class', 'moved-next-image')
+
+    // }, 900);
 }
 
 displayPreviousAndNextImage()
+updateImage(currentlyDisplayedImage)
 
 

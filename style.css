@@ -101,7 +101,7 @@ a {
     position: relative;
     right: -30vw;
     bottom: 65vh;
-
+    transition: all 1.9s ease-in;
 }
 
 #previous-image {
@@ -116,3 +116,15 @@ a {
 .hidden {
     visibility: hidden;
 }
+
+.moved-next-image {
+    /* transform: translate(-10vw, 10vh); */
+        /* width: 50vw;
+    height: 50vh;
+    display: block;
+    margin-left: auto;
+    margin-right: auto; */
+
+    /* transform: translate (-40vw -10vh ); */
+
+  }

@@ -10,7 +10,7 @@ function removeAllChildren(element) {
 let firstTime = true
 
 function updateImage (imageNumber){
-    document.getElementById('next-image').setAttribute('class', 'moved-next-image')
+    //document.getElementById('next-image').setAttribute('class', 'moved-next-image')
 
     function displayNewImageInFrame () {
         displayPreviousAndNextImage()
@@ -23,14 +23,14 @@ function updateImage (imageNumber){
         frame.appendChild(imageElement)
     }
 
-    if (firstTime){
-        displayNewImageInFrame()
-    } else {
-        setTimeout(function() {
-            displayNewImageInFrame ()
-      }, 900);
-    }
-    firstTime = false
+    // if (firstTime){
+         displayNewImageInFrame()
+    // } else {
+    //     setTimeout(function() {
+    //         displayNewImageInFrame ()
+    //   }, 900);
+    // }
+    // firstTime = false
 }
 
 let currentlyDisplayedImage = 0
@@ -40,6 +40,10 @@ const images = ['1.png','2.png','3.png','4.png','5.png']
 
 const previousButton = document.getElementById('previous')
 const nextButton = document.getElementById('next')
+const previousImageFrame = document.getElementById('previous-image-frame')
+const nextImageFrame = document.getElementById('next-image-frame')
+let nextImage = document.getElementById('next-image')
+let previousImage = document.getElementById('previous-image')
 
 previousButton.addEventListener('click',()=>{
     if (currentlyDisplayedImage>0){
@@ -67,8 +71,8 @@ function displayPreviousAndNextImage () {
     previousImage.setAttribute('id', 'previous-image')
 
     if (currentlyDisplayedImage === 0){//show hidden so that their position stays the same regardless of displaying
-        previousImage.setAttribute('src', `images/${images[currentlyDisplayedImage]}`)
         previousImage.setAttribute('class', 'hidden')
+        previousImage.setAttribute('src', `images/${images[currentlyDisplayedImage]}`)
     } else {
         previousImage.setAttribute('src', `images/${images[currentlyDisplayedImage-1]}`)
     }
@@ -79,18 +83,22 @@ function displayPreviousAndNextImage () {
 
     if (currentlyDisplayedImage>=images.length-1){
         console.log('runs')
-        nextImage.setAttribute('src', `images/${images[currentlyDisplayedImage]}`)
         nextImage.setAttribute('class', 'hidden')
+        nextImage.setAttribute('src', `images/${images[currentlyDisplayedImage]}`)
     } else {
         nextImage.setAttribute('src', `images/${images[currentlyDisplayedImage+1]}`)
     }
     nextImageFrame.appendChild(nextImage)
 
-    // setTimeout(function() {
-        // nextImage.setAttribute('class', 'moved-next-image')
 
-    // }, 900);
 }
+
+// function applyAnimation () {
+//     setTimeout(function() {
+//         nextImage.setAttribute('class', 'moved-next-image')
+//         nextImage.setAttribute('class', 'moved-next-image')
+//     }, 900);
+// }
 
 displayPreviousAndNextImage()
 updateImage(currentlyDisplayedImage)

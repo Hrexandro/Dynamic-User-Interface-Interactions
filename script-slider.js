@@ -13,7 +13,9 @@ function updateImage (imageNumber){
     //document.getElementById('next-image').setAttribute('class', 'moved-next-image')
 
     function displayNewImageInFrame () {
-        displayPreviousAndNextImage()
+        //displayPreviousAndNextImage()
+        displayPreviousOrNextImage('previous')
+        displayPreviousOrNextImage('next')
         let image = `images/${images[imageNumber]}`
         const frame = document.getElementById("frame")
         removeAllChildren(frame)
@@ -58,40 +60,63 @@ nextButton.addEventListener('click',()=>{
     }
 })
 
-function displayPreviousAndNextImage () {
-    let previousImageFrame = document.getElementById('previous-image-frame')
-    let nextImageFrame = document.getElementById('next-image-frame')
-    if (document.getElementById('next-image')){
-        document.getElementById('next-image').remove()
+function displayPreviousOrNextImage (whichOne) {//'next' or 'previous'
+    let frameOfImageToBeDisplayed = document.getElementById(`${whichOne}-image-frame`)
+    if (document.getElementById(`${whichOne}-image`)){
+        document.getElementById(`${whichOne}-image`).remove()
     }
-    if (document.getElementById('previous-image')){
-        document.getElementById('previous-image').remove()
+    let imageToBeDisplayed = document.createElement('img')
+    imageToBeDisplayed.setAttribute('id', `${whichOne}-image`)
+
+    if (whichOne === 'previous'){
+        if (currentlyDisplayedImage === 0){// show hidden so that their position stays the same regardless of displaying
+            imageToBeDisplayed.setAttribute('class', 'hidden')
+        }
+        imageToBeDisplayed.setAttribute('src', `images/${images[currentlyDisplayedImage-1]}`)
+    } else {// so next
+        if (currentlyDisplayedImage>=images.length-1){
+            imageToBeDisplayed.setAttribute('class', 'hidden')
+        } else {
+            imageToBeDisplayed.setAttribute('src', `images/${images[currentlyDisplayedImage+1]}`)
+        }
     }
-    const previousImage = document.createElement('img')
-    previousImage.setAttribute('id', 'previous-image')
-
-    if (currentlyDisplayedImage === 0){//show hidden so that their position stays the same regardless of displaying
-        previousImage.setAttribute('class', 'hidden')
-        previousImage.setAttribute('src', `images/${images[currentlyDisplayedImage]}`)
-    } else {
-        previousImage.setAttribute('src', `images/${images[currentlyDisplayedImage-1]}`)
-    }
-    previousImageFrame.appendChild(previousImage)
-    
-    const nextImage = document.createElement('img')
-    nextImage.setAttribute('id', 'next-image')
-
-    if (currentlyDisplayedImage>=images.length-1){
-        console.log('runs')
-        nextImage.setAttribute('class', 'hidden')
-        nextImage.setAttribute('src', `images/${images[currentlyDisplayedImage]}`)
-    } else {
-        nextImage.setAttribute('src', `images/${images[currentlyDisplayedImage+1]}`)
-    }
-    nextImageFrame.appendChild(nextImage)
-
-
+    frameOfImageToBeDisplayed.appendChild(imageToBeDisplayed)
 }
+
+// function displayPreviousAndNextImage () {
+//     let previousImageFrame = document.getElementById('previous-image-frame')
+//     let nextImageFrame = document.getElementById('next-image-frame')
+//     if (document.getElementById('next-image')){
+//         document.getElementById('next-image').remove()
+//     }
+//     if (document.getElementById('previous-image')){
+//         document.getElementById('previous-image').remove()
+//     }
+//     const previousImage = document.createElement('img')
+//     previousImage.setAttribute('id', 'previous-image')
+
+//     if (currentlyDisplayedImage === 0){//show hidden so that their position stays the same regardless of displaying
+//         previousImage.setAttribute('class', 'hidden')
+//         previousImage.setAttribute('src', `images/${images[currentlyDisplayedImage]}`)
+//     } else {
+//         previousImage.setAttribute('src', `images/${images[currentlyDisplayedImage-1]}`)
+//     }
+//     previousImageFrame.appendChild(previousImage)
+    
+//     const nextImage = document.createElement('img')
+//     nextImage.setAttribute('id', 'next-image')
+
+//     if (currentlyDisplayedImage>=images.length-1){
+//         console.log('runs')
+//         nextImage.setAttribute('class', 'hidden')
+//         nextImage.setAttribute('src', `images/${images[currentlyDisplayedImage]}`)
+//     } else {
+//         nextImage.setAttribute('src', `images/${images[currentlyDisplayedImage+1]}`)
+//     }
+//     nextImageFrame.appendChild(nextImage)
+
+
+// }
 
 // function applyAnimation () {
 //     setTimeout(function() {
@@ -100,7 +125,9 @@ function displayPreviousAndNextImage () {
 //     }, 900);
 // }
 
-displayPreviousAndNextImage()
+//displayPreviousAndNextImage()
+displayPreviousOrNextImage('previous')
+displayPreviousOrNextImage('next')
 updateImage(currentlyDisplayedImage)
 
 

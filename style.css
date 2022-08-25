@@ -71,6 +71,7 @@ a {
 }
 
 
+
 #images{
     padding-top: 20vh;
     width: 165vw;
@@ -127,6 +128,18 @@ a {
 
 .hidden {
     visibility: hidden;
+}
+
+#next-image-frame, #previous-image-frame {
+    position: relative;
+}
+
+#next-next-image, #previous-previous-image {
+
+  position: absolute;
+  top: 0;
+  left: 0;
+
 }
 
 .moved-next-image {

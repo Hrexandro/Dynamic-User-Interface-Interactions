@@ -14,6 +14,8 @@ function updateImage (imageNumber){
 
     function displayNewImageInFrame () {
         //displayPreviousAndNextImage()
+        displayAnotherImageFurtherDownTheListUnderTheNextOrPreviousOne ('next')
+        displayAnotherImageFurtherDownTheListUnderTheNextOrPreviousOne ('previous')
         displayPreviousOrNextImage('previous')
         displayPreviousOrNextImage('next')
         let image = `images/${images[imageNumber]}`
@@ -83,7 +85,31 @@ function displayPreviousOrNextImage (whichOne) {//'next' or 'previous'
     frameOfImageToBeDisplayed.appendChild(imageToBeDisplayed)
 }
 
-// function displayPreviousAndNextImage () {
+function displayAnotherImageFurtherDownTheListUnderTheNextOrPreviousOne (whichOne) {//'next' or 'previous' - the image itself will be next-next or previous-previous
+    let frameOfImageToBeDisplayed = document.getElementById(`${whichOne}-image-frame`)
+    if (document.getElementById(`${whichOne}-${whichOne}-image`)){
+        document.getElementById(`${whichOne}-${whichOne}-image`).remove()
+    }
+    let imageToBeDisplayed = document.createElement('img')
+    imageToBeDisplayed.setAttribute('id', `${whichOne}-${whichOne}-image`)
+
+    if (whichOne === 'previous-previous'){
+        if (currentlyDisplayedImage === 1){// show hidden so that their position stays the same regardless of displaying
+            imageToBeDisplayed.setAttribute('class', 'hidden')
+        }
+        imageToBeDisplayed.setAttribute('src', `images/${images[currentlyDisplayedImage-2]}`)
+    } else if (whichOne === 'next-next'){// so next
+        if (currentlyDisplayedImage>=images.length-2){
+            imageToBeDisplayed.setAttribute('class', 'hidden')
+        } else {
+            imageToBeDisplayed.setAttribute('src', `images/${images[currentlyDisplayedImage+2]}`)
+        }
+    }
+    frameOfImageToBeDisplayed.prepend(imageToBeDisplayed)
+
+}
+
+// function displayPreviousAndNextImage() {
 //     let previousImageFrame = document.getElementById('previous-image-frame')
 //     let nextImageFrame = document.getElementById('next-image-frame')
 //     if (document.getElementById('next-image')){

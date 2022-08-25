@@ -126,12 +126,18 @@ a {
 
 }
 
+img {
+    width: 50vw;
+    height: 50vh; 
+}
+
 .hidden {
     visibility: hidden;
 }
 
 #next-image-frame, #previous-image-frame {
     position: relative;
+    
 }
 
 #next-next-image, #previous-previous-image {
@@ -139,7 +145,7 @@ a {
   position: absolute;
   top: 0;
   left: 0;
-
+  transform: translate(0, -10vh);
 }
 
 .moved-next-image {

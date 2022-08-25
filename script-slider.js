@@ -11,11 +11,9 @@ let firstTime = true
 
 function updateImage (imageNumber){
     //document.getElementById('next-image').setAttribute('class', 'moved-next-image')
-
+    
     function displayNewImageInFrame () {
         //displayPreviousAndNextImage()
-        displayAnotherImageFurtherDownTheListUnderTheNextOrPreviousOne ('next')
-        displayAnotherImageFurtherDownTheListUnderTheNextOrPreviousOne ('previous')
         displayPreviousOrNextImage('previous')
         displayPreviousOrNextImage('next')
         let image = `images/${images[imageNumber]}`
@@ -27,11 +25,17 @@ function updateImage (imageNumber){
         frame.appendChild(imageElement)
     }
 
+    // function applyAnimation () {
+    //     //document.getElementById('next-image')
+    // }
+    displayAnotherImageFurtherDownTheListUnderTheNextOrPreviousOne ('next')//these have to appear before so there is something under when animation happens
+    displayAnotherImageFurtherDownTheListUnderTheNextOrPreviousOne ('previous')
+
     // if (firstTime){
          displayNewImageInFrame()
     // } else {
     //     setTimeout(function() {
-    //         displayNewImageInFrame ()
+    //         displayNewImageInFrame()
     //   }, 900);
     // }
     // firstTime = false
@@ -93,12 +97,14 @@ function displayAnotherImageFurtherDownTheListUnderTheNextOrPreviousOne (whichOn
     let imageToBeDisplayed = document.createElement('img')
     imageToBeDisplayed.setAttribute('id', `${whichOne}-${whichOne}-image`)
 
-    if (whichOne === 'previous-previous'){
-        if (currentlyDisplayedImage === 1){// show hidden so that their position stays the same regardless of displaying
+    if (whichOne === 'previous'){//previous-previous
+        if (currentlyDisplayedImage === 0){// show hidden so that their position stays the same regardless of displaying
             imageToBeDisplayed.setAttribute('class', 'hidden')
         }
-        imageToBeDisplayed.setAttribute('src', `images/${images[currentlyDisplayedImage-2]}`)
-    } else if (whichOne === 'next-next'){// so next
+        else {
+            imageToBeDisplayed.setAttribute('src', `images/${images[currentlyDisplayedImage-2]}`)
+        }
+    } else if (whichOne === 'next'){//next-next
         if (currentlyDisplayedImage>=images.length-2){
             imageToBeDisplayed.setAttribute('class', 'hidden')
         } else {

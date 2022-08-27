@@ -10,7 +10,6 @@ function removeAllChildren(element) {
 let firstTime = true
 let direction = 'forward'
 
-
 function startAutoView () {
     setTimeout(function() {
         if (currentlyDisplayedImage === 0){
@@ -131,9 +130,24 @@ function displayAnotherImageFurtherDownTheListUnderTheNextOrPreviousOne (whichOn
 
 }
 
+function createNavigationDots () {
+    for (let i = 0; i < images.length; i++){
+        let navigationDot = document.createElement('div')
+        navigationDot.classList.add('navigation-dot')
+        navigationDot.setAttribute('id', `${i}`)
+        document.getElementById('navigation-dots-container').appendChild(navigationDot)
+        navigationDot.addEventListener('click',()=>{
+            console.log(i)
+        })
+
+    }
+
+}
+
 displayPreviousOrNextImage('previous')
 displayPreviousOrNextImage('next')
 updateImage(currentlyDisplayedImage)
 startAutoView()
+createNavigationDots()
 
 

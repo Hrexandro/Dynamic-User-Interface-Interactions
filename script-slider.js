@@ -8,10 +8,28 @@ function removeAllChildren(element) {
 }
 
 let firstTime = true
+let direction = 'forward'
 
-function updateImage (imageNumber){
-    //document.getElementById('next-image').setAttribute('class', 'moved-next-image')
-    
+
+function startAutoView () {
+    setTimeout(function() {
+        if (currentlyDisplayedImage === 0){
+            direction = 'forward'
+        } else if (currentlyDisplayedImage>=images.length-1) {
+            direction = 'backward'
+        }
+        if (direction === 'forward'){
+            currentlyDisplayedImage++
+            updateImage(currentlyDisplayedImage)
+        } else if (direction === 'backward'){
+            currentlyDisplayedImage--
+            updateImage(currentlyDisplayedImage)
+        }
+        startAutoView()
+          }, 5000);
+}
+
+function updateImage (imageNumber){    
     function displayNewImageInFrame () {
         //displayPreviousAndNextImage()
         displayPreviousOrNextImage('previous')
@@ -25,9 +43,6 @@ function updateImage (imageNumber){
         frame.appendChild(imageElement)
     }
 
-    // function applyAnimation () {
-    //     //document.getElementById('next-image')
-    // }
     displayAnotherImageFurtherDownTheListUnderTheNextOrPreviousOne ('next')//these have to appear before so there is something under when animation happens
     displayAnotherImageFurtherDownTheListUnderTheNextOrPreviousOne ('previous')
 
@@ -78,7 +93,9 @@ function displayPreviousOrNextImage (whichOne) {//'next' or 'previous'
         if (currentlyDisplayedImage === 0){// show hidden so that their position stays the same regardless of displaying
             imageToBeDisplayed.setAttribute('class', 'hidden')
         }
-        imageToBeDisplayed.setAttribute('src', `images/${images[currentlyDisplayedImage-1]}`)
+        else {
+            imageToBeDisplayed.setAttribute('src', `images/${images[currentlyDisplayedImage-1]}`)
+        }
     } else {// so next
         if (currentlyDisplayedImage>=images.length-1){
             imageToBeDisplayed.setAttribute('class', 'hidden')
@@ -96,7 +113,6 @@ function displayAnotherImageFurtherDownTheListUnderTheNextOrPreviousOne (whichOn
     }
     let imageToBeDisplayed = document.createElement('img')
     imageToBeDisplayed.setAttribute('id', `${whichOne}-${whichOne}-image`)
-
     if (whichOne === 'previous'){//previous-previous
         if (currentlyDisplayedImage === 0){// show hidden so that their position stays the same regardless of displaying
             imageToBeDisplayed.setAttribute('class', 'hidden')
@@ -115,51 +131,9 @@ function displayAnotherImageFurtherDownTheListUnderTheNextOrPreviousOne (whichOn
 
 }
 
-// function displayPreviousAndNextImage() {
-//     let previousImageFrame = document.getElementById('previous-image-frame')
-//     let nextImageFrame = document.getElementById('next-image-frame')
-//     if (document.getElementById('next-image')){
-//         document.getElementById('next-image').remove()
-//     }
-//     if (document.getElementById('previous-image')){
-//         document.getElementById('previous-image').remove()
-//     }
-//     const previousImage = document.createElement('img')
-//     previousImage.setAttribute('id', 'previous-image')
-
-//     if (currentlyDisplayedImage === 0){//show hidden so that their position stays the same regardless of displaying
-//         previousImage.setAttribute('class', 'hidden')
-//         previousImage.setAttribute('src', `images/${images[currentlyDisplayedImage]}`)
-//     } else {
-//         previousImage.setAttribute('src', `images/${images[currentlyDisplayedImage-1]}`)
-//     }
-//     previousImageFrame.appendChild(previousImage)
-    
-//     const nextImage = document.createElement('img')
-//     nextImage.setAttribute('id', 'next-image')
-
-//     if (currentlyDisplayedImage>=images.length-1){
-//         console.log('runs')
-//         nextImage.setAttribute('class', 'hidden')
-//         nextImage.setAttribute('src', `images/${images[currentlyDisplayedImage]}`)
-//     } else {
-//         nextImage.setAttribute('src', `images/${images[currentlyDisplayedImage+1]}`)
-//     }
-//     nextImageFrame.appendChild(nextImage)
-
-
-// }
-
-// function applyAnimation () {
-//     setTimeout(function() {
-//         nextImage.setAttribute('class', 'moved-next-image')
-//         nextImage.setAttribute('class', 'moved-next-image')
-//     }, 900);
-// }
-
-//displayPreviousAndNextImage()
 displayPreviousOrNextImage('previous')
 displayPreviousOrNextImage('next')
 updateImage(currentlyDisplayedImage)
+startAutoView()
 
 

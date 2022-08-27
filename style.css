@@ -107,8 +107,9 @@ a {
 #next-image {
     width: 50vw;
     height: 50vh;
-    transform: translate(0, -10vh);
+    /* transform: translate(0, -10vh); */
     transition: all 1.9s ease-in;
+    z-index: 999;
     /* position: relative;
     right: -30vw;
     bottom: 65vh;
@@ -118,7 +119,8 @@ a {
 #previous-image {
     width: 50vw;
     height: 50vh;
-    transform: translate(0, -10vh);
+    z-index: 999;
+    /* transform: translate(0, -10vh); */
     transition: all 1.9s ease-in;
     /* position: relative;
     left: -30vw;
@@ -141,15 +143,15 @@ img {
 }
 
 #next-next-image, #previous-previous-image {
-
+  z-index: -1;
   position: absolute;
   top: 0;
   left: 0;
-  transform: translate(0, -10vh);
+  /* transform: translate(0, -10vh); */
 }
 
 .moved-next-image {
-    transform: translate(50vw, 10vh);
+    /* transform: translate(50vw, 10vh); */
 
   }
 .moved-previous-image {

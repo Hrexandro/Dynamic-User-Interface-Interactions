@@ -10,6 +10,7 @@ function removeAllChildren(element) {
 let firstTime = true
 let direction = 'forward'
 
+
 function startAutoView () {
     setTimeout(function() {
         if (currentlyDisplayedImage === 0){
@@ -30,6 +31,9 @@ function startAutoView () {
 
 function updateImage (imageNumber){    
     function displayNewImageInFrame () {
+        Array.from(document.getElementsByClassName('navigation-dot')).forEach((dot)=>{
+            dot.classList.remove('current-dot')
+        })
         //displayPreviousAndNextImage()
         displayPreviousOrNextImage('previous')
         displayPreviousOrNextImage('next')
@@ -40,6 +44,8 @@ function updateImage (imageNumber){
         imageElement.setAttribute('id', 'current-image')
         imageElement.setAttribute('src', image)
         frame.appendChild(imageElement)
+        console.log(imageNumber)
+        document.getElementById(imageNumber).classList.add('current-dot')
     }
 
     displayAnotherImageFurtherDownTheListUnderTheNextOrPreviousOne ('next')//these have to appear before so there is something under when animation happens
@@ -137,17 +143,18 @@ function createNavigationDots () {
         navigationDot.setAttribute('id', `${i}`)
         document.getElementById('navigation-dots-container').appendChild(navigationDot)
         navigationDot.addEventListener('click',()=>{
-            console.log(i)
+            currentlyDisplayedImage = i
+            updateImage(currentlyDisplayedImage)
         })
 
     }
 
 }
 
+createNavigationDots()
 displayPreviousOrNextImage('previous')
 displayPreviousOrNextImage('next')
 updateImage(currentlyDisplayedImage)
 startAutoView()
-createNavigationDots()
 
 

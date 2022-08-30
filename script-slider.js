@@ -51,14 +51,17 @@ function updateImage (imageNumber){
     displayAnotherImageFurtherDownTheListUnderTheNextOrPreviousOne ('next')//these have to appear before so there is something under when animation happens
     displayAnotherImageFurtherDownTheListUnderTheNextOrPreviousOne ('previous')
 
-    // if (firstTime){
+    if (firstTime){
          displayNewImageInFrame()
-    // } else {
-    //     setTimeout(function() {
-    //         displayNewImageInFrame()
-    //   }, 900);
-    // }
-    // firstTime = false
+    } else {
+
+        setTimeout(function() {
+            displayNewImageInFrame()
+            document.getElementById('next-image').classList.remove('moved-next-image')
+            document.getElementById('previous-image').classList.remove('moved-previous-image')
+      }, 1900);
+    }
+    firstTime = false
 }
 
 let currentlyDisplayedImage = 0
@@ -73,14 +76,22 @@ const nextImageFrame = document.getElementById('next-image-frame')
 let nextImage = document.getElementById('next-image')
 let previousImage = document.getElementById('previous-image')
 
+function crementImageAndApplyProperAnimationClass (isTheDirectionForward) {
+    isTheDirectionForward
+    ? (currentlyDisplayedImage++, document.getElementById('next-image').classList.add('moved-next-image'))
+    : (currentlyDisplayedImage--, document.getElementById('previous-image').classList.add('moved-previous-image'))
+}
+
 previousButton.addEventListener('click',()=>{
     if (currentlyDisplayedImage>0){
+        document.getElementById('previous-image').classList.add('moved-previous-image')
         currentlyDisplayedImage--
         updateImage(currentlyDisplayedImage)
     }
 })
 nextButton.addEventListener('click',()=>{
     if (currentlyDisplayedImage<images.length-1){
+        document.getElementById('next-image').classList.add('moved-next-image')
         currentlyDisplayedImage++
         updateImage(currentlyDisplayedImage)
     }
@@ -155,6 +166,6 @@ createNavigationDots()
 displayPreviousOrNextImage('previous')
 displayPreviousOrNextImage('next')
 updateImage(currentlyDisplayedImage)
-startAutoView()
+// startAutoView()
 
 

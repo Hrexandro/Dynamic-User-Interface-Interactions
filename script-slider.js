@@ -1,3 +1,9 @@
+//move also central images
+//add further images
+//make the movement faster for jumping to farther images using navigation-dots
+//^ code the above using differene between currentlyDisplayedImage and the image to be displayed, and run th function the appropriate number of times
+
+
 function removeAllChildren(element) {
     let counter = element.children.length;
     for (let m = 0; m <= counter; m++) {
@@ -19,17 +25,18 @@ function startAutoView () {
             direction = 'backward'
         }
         if (direction === 'forward'){
-            currentlyDisplayedImage++
-            updateImage(currentlyDisplayedImage)
+            //currentlyDisplayedImage++
+            updateImage(currentlyDisplayedImage+1)
         } else if (direction === 'backward'){
-            currentlyDisplayedImage--
-            updateImage(currentlyDisplayedImage)
+            //currentlyDisplayedImage--
+            updateImage(currentlyDisplayedImage-1)
         }
         startAutoView()
           }, 5000);
 }
 
 function updateImage (imageNumber){    
+    currentlyDisplayedImage = imageNumber //////////////////////////////////////////////////////
     function displayNewImageInFrame () {
         Array.from(document.getElementsByClassName('navigation-dot')).forEach((dot)=>{
             dot.classList.remove('current-dot')
@@ -76,24 +83,30 @@ const nextImageFrame = document.getElementById('next-image-frame')
 let nextImage = document.getElementById('next-image')
 let previousImage = document.getElementById('previous-image')
 
-function crementImageAndApplyProperAnimationClass (isTheDirectionForward) {
+function crementImageAndApplyProperAnimationClass (isTheDirectionForward) {//this is not currently used
     isTheDirectionForward
-    ? (currentlyDisplayedImage++, document.getElementById('next-image').classList.add('moved-next-image'))
-    : (currentlyDisplayedImage--, document.getElementById('previous-image').classList.add('moved-previous-image'))
+    ? (currentlyDisplayedImage++,
+      document.getElementById('next-image').classList.add('moved-next-image'),
+      document.getElementById('previous-image').classList.add('moved-next-image'))
+    : (currentlyDisplayedImage--,
+      document.getElementById('previous-image').classList.add('moved-previous-image'),
+      document.getElementById('next-image').classList.add('moved-previous-image'))
 }
 
 previousButton.addEventListener('click',()=>{
     if (currentlyDisplayedImage>0){
         document.getElementById('previous-image').classList.add('moved-previous-image')
-        currentlyDisplayedImage--
-        updateImage(currentlyDisplayedImage)
+        document.getElementById('next-image').classList.add('moved-previous-image')
+        //currentlyDisplayedImage--
+        updateImage(currentlyDisplayedImage-1)
     }
 })
 nextButton.addEventListener('click',()=>{
     if (currentlyDisplayedImage<images.length-1){
         document.getElementById('next-image').classList.add('moved-next-image')
-        currentlyDisplayedImage++
-        updateImage(currentlyDisplayedImage)
+        document.getElementById('previous-image').classList.add('moved-next-image')
+        //currentlyDisplayedImage++
+        updateImage(currentlyDisplayedImage+1)
     }
 })
 
@@ -154,8 +167,7 @@ function createNavigationDots () {
         navigationDot.setAttribute('id', `${i}`)
         document.getElementById('navigation-dots-container').appendChild(navigationDot)
         navigationDot.addEventListener('click',()=>{
-            currentlyDisplayedImage = i
-            updateImage(currentlyDisplayedImage)
+            updateImage(i)
         })
 
     }

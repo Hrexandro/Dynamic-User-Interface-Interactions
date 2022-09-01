@@ -13,9 +13,7 @@ function removeAllChildren(element) {
     }
 }
 
-let firstTime = true
 let direction = 'forward'
-
 
 function startAutoView () {
     setTimeout(function() {
@@ -36,14 +34,15 @@ function startAutoView () {
 }
 
 function updateImage (imageNumber){    
-    currentlyDisplayedImage = imageNumber //////////////////////////////////////////////////////
+
     function displayNewImageInFrame () {
+
         Array.from(document.getElementsByClassName('navigation-dot')).forEach((dot)=>{
             dot.classList.remove('current-dot')
         })
         //displayPreviousAndNextImage()
-        displayPreviousOrNextImage('previous')
-        displayPreviousOrNextImage('next')
+        displayPreviousOrNextImage('previous', imageNumber)
+        displayPreviousOrNextImage('next', imageNumber)
         let image = `images/${images[imageNumber]}`
         const frame = document.getElementById("frame")
         removeAllChildren(frame)
@@ -53,22 +52,25 @@ function updateImage (imageNumber){
         frame.appendChild(imageElement)
         console.log(imageNumber)
         document.getElementById(imageNumber).classList.add('current-dot')
+
+        currentlyDisplayedImage = imageNumber
     }
 
-    displayAnotherImageFurtherDownTheListUnderTheNextOrPreviousOne ('next')//these have to appear before so there is something under when animation happens
-    displayAnotherImageFurtherDownTheListUnderTheNextOrPreviousOne ('previous')
-
-    if (firstTime){
-         displayNewImageInFrame()
-    } else {
+    // displayAnotherImageFurtherDownTheListUnderTheNextOrPreviousOne ('next')//these have to appear before so there is something under when animation happens
+    // displayAnotherImageFurtherDownTheListUnderTheNextOrPreviousOne ('previous')
+    let changes = 0
+    if (currentlyDisplayedImage !== imageNumber){
+        changes = Math.abs(imageNumber-currentlyDisplayedImage)// make it into a loop taking into account the number of changes
 
         setTimeout(function() {
             displayNewImageInFrame()
             document.getElementById('next-image').classList.remove('moved-next-image')
             document.getElementById('previous-image').classList.remove('moved-previous-image')
       }, 1900);
+
+    } else {
+        displayNewImageInFrame()
     }
-    firstTime = false
 }
 
 let currentlyDisplayedImage = 0
@@ -83,15 +85,15 @@ const nextImageFrame = document.getElementById('next-image-frame')
 let nextImage = document.getElementById('next-image')
 let previousImage = document.getElementById('previous-image')
 
-function crementImageAndApplyProperAnimationClass (isTheDirectionForward) {//this is not currently used
-    isTheDirectionForward
-    ? (currentlyDisplayedImage++,
-      document.getElementById('next-image').classList.add('moved-next-image'),
-      document.getElementById('previous-image').classList.add('moved-next-image'))
-    : (currentlyDisplayedImage--,
-      document.getElementById('previous-image').classList.add('moved-previous-image'),
-      document.getElementById('next-image').classList.add('moved-previous-image'))
-}
+// function crementImageAndApplyProperAnimationClass (isTheDirectionForward) {//this is not currently used
+//     isTheDirectionForward
+//     ? (currentlyDisplayedImage++,
+//       document.getElementById('next-image').classList.add('moved-next-image'),
+//       document.getElementById('previous-image').classList.add('moved-next-image'))
+//     : (currentlyDisplayedImage--,
+//       document.getElementById('previous-image').classList.add('moved-previous-image'),
+//       document.getElementById('next-image').classList.add('moved-previous-image'))
+// }
 
 previousButton.addEventListener('click',()=>{
     if (currentlyDisplayedImage>0){
@@ -110,7 +112,7 @@ nextButton.addEventListener('click',()=>{
     }
 })
 
-function displayPreviousOrNextImage (whichOne) {//'next' or 'previous'
+function displayPreviousOrNextImage (whichOne, number) {//'next' or 'previous', number of image to be displayed
     let frameOfImageToBeDisplayed = document.getElementById(`${whichOne}-image-frame`)
     if (document.getElementById(`${whichOne}-image`)){
         document.getElementById(`${whichOne}-image`).remove()
@@ -119,46 +121,46 @@ function displayPreviousOrNextImage (whichOne) {//'next' or 'previous'
     imageToBeDisplayed.setAttribute('id', `${whichOne}-image`)
 
     if (whichOne === 'previous'){
-        if (currentlyDisplayedImage === 0){// show hidden so that their position stays the same regardless of displaying
+        if (number === 0){// show hidden so that their position stays the same regardless of displaying
             imageToBeDisplayed.setAttribute('class', 'hidden')
         }
         else {
-            imageToBeDisplayed.setAttribute('src', `images/${images[currentlyDisplayedImage-1]}`)
+            imageToBeDisplayed.setAttribute('src', `images/${images[number-1]}`)
         }
     } else {// so next
-        if (currentlyDisplayedImage>=images.length-1){
+        if (number>=images.length-1){
             imageToBeDisplayed.setAttribute('class', 'hidden')
         } else {
-            imageToBeDisplayed.setAttribute('src', `images/${images[currentlyDisplayedImage+1]}`)
+            imageToBeDisplayed.setAttribute('src', `images/${images[number+1]}`)
         }
     }
     frameOfImageToBeDisplayed.appendChild(imageToBeDisplayed)
 }
 
-function displayAnotherImageFurtherDownTheListUnderTheNextOrPreviousOne (whichOne) {//'next' or 'previous' - the image itself will be next-next or previous-previous
-    let frameOfImageToBeDisplayed = document.getElementById(`${whichOne}-image-frame`)
-    if (document.getElementById(`${whichOne}-${whichOne}-image`)){
-        document.getElementById(`${whichOne}-${whichOne}-image`).remove()
-    }
-    let imageToBeDisplayed = document.createElement('img')
-    imageToBeDisplayed.setAttribute('id', `${whichOne}-${whichOne}-image`)
-    if (whichOne === 'previous'){//previous-previous
-        if (currentlyDisplayedImage === 0){// show hidden so that their position stays the same regardless of displaying
-            imageToBeDisplayed.setAttribute('class', 'hidden')
-        }
-        else {
-            imageToBeDisplayed.setAttribute('src', `images/${images[currentlyDisplayedImage-2]}`)
-        }
-    } else if (whichOne === 'next'){//next-next
-        if (currentlyDisplayedImage>=images.length-2){
-            imageToBeDisplayed.setAttribute('class', 'hidden')
-        } else {
-            imageToBeDisplayed.setAttribute('src', `images/${images[currentlyDisplayedImage+2]}`)
-        }
-    }
-    frameOfImageToBeDisplayed.prepend(imageToBeDisplayed)
+// function displayAnotherImageFurtherDownTheListUnderTheNextOrPreviousOne (whichOne) {//'next' or 'previous' - the image itself will be next-next or previous-previous
+//     let frameOfImageToBeDisplayed = document.getElementById(`${whichOne}-image-frame`)
+//     if (document.getElementById(`${whichOne}-${whichOne}-image`)){
+//         document.getElementById(`${whichOne}-${whichOne}-image`).remove()
+//     }
+//     let imageToBeDisplayed = document.createElement('img')
+//     imageToBeDisplayed.setAttribute('id', `${whichOne}-${whichOne}-image`)
+//     if (whichOne === 'previous'){//previous-previous
+//         if (currentlyDisplayedImage === 0){// show hidden so that their position stays the same regardless of displaying
+//             imageToBeDisplayed.setAttribute('class', 'hidden')
+//         }
+//         else {
+//             imageToBeDisplayed.setAttribute('src', `images/${images[currentlyDisplayedImage-2]}`)
+//         }
+//     } else if (whichOne === 'next'){//next-next
+//         if (currentlyDisplayedImage>=images.length-2){
+//             imageToBeDisplayed.setAttribute('class', 'hidden')
+//         } else {
+//             imageToBeDisplayed.setAttribute('src', `images/${images[currentlyDisplayedImage+2]}`)
+//         }
+//     }
+//     frameOfImageToBeDisplayed.prepend(imageToBeDisplayed)
 
-}
+// }
 
 function createNavigationDots () {
     for (let i = 0; i < images.length; i++){
@@ -175,9 +177,9 @@ function createNavigationDots () {
 }
 
 createNavigationDots()
-displayPreviousOrNextImage('previous')
-displayPreviousOrNextImage('next')
-updateImage(currentlyDisplayedImage)
+displayPreviousOrNextImage('previous', currentlyDisplayedImage-1)
+displayPreviousOrNextImage('next', currentlyDisplayedImage+1)
+updateImage(currentlyDisplayedImage, 0)
 // startAutoView()
 
 

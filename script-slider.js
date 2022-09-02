@@ -33,43 +33,77 @@ function startAutoView () {
           }, 5000);
 }
 
-function updateImage (imageNumber){    
+function updateImage (imageNumber){   
+    console.log("update image runs")
+    let startingImage = currentlyDisplayedImage
 
-    function displayNewImageInFrame () {
+    function displayNewImageInFrame (displayedImageNumber) {
 
         Array.from(document.getElementsByClassName('navigation-dot')).forEach((dot)=>{
             dot.classList.remove('current-dot')
         })
         //displayPreviousAndNextImage()
-        displayPreviousOrNextImage('previous', imageNumber)
-        displayPreviousOrNextImage('next', imageNumber)
-        let image = `images/${images[imageNumber]}`
+        displayPreviousOrNextImage('previous', displayedImageNumber)
+        displayPreviousOrNextImage('next', displayedImageNumber)
+        let image = `images/${images[displayedImageNumber]}`
         const frame = document.getElementById("frame")
         removeAllChildren(frame)
         let imageElement = document.createElement('img')
         imageElement.setAttribute('id', 'current-image')
         imageElement.setAttribute('src', image)
         frame.appendChild(imageElement)
-        console.log(imageNumber)
-        document.getElementById(imageNumber).classList.add('current-dot')
+        console.log(displayedImageNumber)
+        document.getElementById(displayedImageNumber).classList.add('current-dot')
 
-        currentlyDisplayedImage = imageNumber
+        currentlyDisplayedImage = displayedImageNumber
     }
 
     // displayAnotherImageFurtherDownTheListUnderTheNextOrPreviousOne ('next')//these have to appear before so there is something under when animation happens
     // displayAnotherImageFurtherDownTheListUnderTheNextOrPreviousOne ('previous')
-    let changes = 0
-    if (currentlyDisplayedImage !== imageNumber){
-        changes = Math.abs(imageNumber-currentlyDisplayedImage)// make it into a loop taking into account the number of changes
+    //let changes = Math.abs(imageNumber-currentlyDisplayedImage)
 
-        setTimeout(function() {
-            displayNewImageInFrame()
-            document.getElementById('next-image').classList.remove('moved-next-image')
-            document.getElementById('previous-image').classList.remove('moved-previous-image')
-      }, 1900);
+    let changes = imageNumber-currentlyDisplayedImage //going forward is positive, going backwards is negative number
+    if (currentlyDisplayedImage !== imageNumber){
+        console.log(currentlyDisplayedImage !== imageNumber)
+        console.log('changes is'+changes)
+        if (changes < 0){//backwards
+            console.log(changes < 0)
+            for (let k = 0; k >= changes; k--){//coraz mniej?
+                console.log('testing this')
+                console.log('changes is'+changes)
+                console.log('k is'+changes)
+                // setTimeout(function() {
+                    displayNewImageInFrame(startingImage-k)// nie może być -k skoro k to jest 0
+                    document.getElementById('next-image').classList.remove('moved-next-image')
+                    document.getElementById('previous-image').classList.remove('moved-previous-image')
+                // }, 900);
+            }
+
+        } else if (changes > 0){//forward
+            for (let k = 0; k <= changes; k++){
+                // setTimeout(function() {
+                    displayNewImageInFrame(startingImage+k)
+                    document.getElementById('next-image').classList.remove('moved-next-image')
+                    document.getElementById('previous-image').classList.remove('moved-previous-image')
+                // }, 900);
+            }
+            // setTimeout(function() {
+                // console.log('testing this')
+                // console.log('changes is'+changes)
+                // console.log('changes is'+changes)
+
+            // }, 900);
+        }
+
+
+    //     setTimeout(function() {
+    //         displayNewImageInFrame()
+    //         document.getElementById('next-image').classList.remove('moved-next-image')
+    //         document.getElementById('previous-image').classList.remove('moved-previous-image')
+    //   }, 1900);
 
     } else {
-        displayNewImageInFrame()
+        displayNewImageInFrame(imageNumber)
     }
 }
 

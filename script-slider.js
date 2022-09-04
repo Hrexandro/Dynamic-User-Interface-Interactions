@@ -1,7 +1,6 @@
-//move also central images
-//add further images
-//make the movement faster for jumping to farther images using navigation-dots
-//^ code the above using differene between currentlyDisplayedImage and the image to be displayed, and run th function the appropriate number of times
+//move adding the classes that handle the animation from the buttons and into the updateImage function
+//animate also the underlying farther images
+//make some kind of animation for when jumping multiple images at a time
 
 
 function removeAllChildren(element) {
@@ -38,7 +37,7 @@ function updateImage (imageNumber){
     let startingImage = currentlyDisplayedImage
 
     function displayNewImageInFrame (displayedImageNumber) {
-
+        console.log('displaying image '+displayedImageNumber)
         Array.from(document.getElementsByClassName('navigation-dot')).forEach((dot)=>{
             dot.classList.remove('current-dot')
         })
@@ -66,43 +65,29 @@ function updateImage (imageNumber){
     if (currentlyDisplayedImage !== imageNumber){
         console.log(currentlyDisplayedImage !== imageNumber)
         console.log('changes is'+changes)
-        if (changes < 0){//backwards
-            console.log(changes < 0)
-            for (let k = 0; k >= changes; k--){//coraz mniej?
-                console.log('testing this')
-                console.log('changes is'+changes)
-                console.log('k is'+changes)
-                // setTimeout(function() {
-                    displayNewImageInFrame(startingImage-k)// nie może być -k skoro k to jest 0
+        if (changes < -1){//backwards
+            for (let k = 0; k >= changes; k--){
+                    displayNewImageInFrame(startingImage-(-k))
                     document.getElementById('next-image').classList.remove('moved-next-image')
                     document.getElementById('previous-image').classList.remove('moved-previous-image')
-                // }, 900);
+
             }
 
-        } else if (changes > 0){//forward
+        } else if (changes > 1){//forward
             for (let k = 0; k <= changes; k++){
-                // setTimeout(function() {
                     displayNewImageInFrame(startingImage+k)
                     document.getElementById('next-image').classList.remove('moved-next-image')
                     document.getElementById('previous-image').classList.remove('moved-previous-image')
-                // }, 900);
             }
-            // setTimeout(function() {
-                // console.log('testing this')
-                // console.log('changes is'+changes)
-                // console.log('changes is'+changes)
+        } else {}
+            setTimeout(function() {
+            displayNewImageInFrame(imageNumber)
+            document.getElementById('next-image').classList.remove('moved-next-image')
+            document.getElementById('previous-image').classList.remove('moved-previous-image')
 
-            // }, 900);
-        }
+            }, 900);
 
-
-    //     setTimeout(function() {
-    //         displayNewImageInFrame()
-    //         document.getElementById('next-image').classList.remove('moved-next-image')
-    //         document.getElementById('previous-image').classList.remove('moved-previous-image')
-    //   }, 1900);
-
-    } else {
+    } else {//starting state
         displayNewImageInFrame(imageNumber)
     }
 }
@@ -131,6 +116,7 @@ let previousImage = document.getElementById('previous-image')
 
 previousButton.addEventListener('click',()=>{
     if (currentlyDisplayedImage>0){
+        console.log("previous image button clicked")
         document.getElementById('previous-image').classList.add('moved-previous-image')
         document.getElementById('next-image').classList.add('moved-previous-image')
         //currentlyDisplayedImage--

@@ -1,4 +1,4 @@
-//move adding the classes that handle the animation from the buttons and into the updateImage function
+
 //animate also the underlying farther images
 //make some kind of animation for when jumping multiple images at a time
 
@@ -35,6 +35,13 @@ function startAutoView () {
 function updateImage (imageNumber){   
     console.log("update image runs")
     let startingImage = currentlyDisplayedImage
+    if (imageNumber < startingImage){
+        document.getElementById('previous-image').classList.add('moved-previous-image')
+        document.getElementById('next-image').classList.add('moved-previous-image')
+    } else if (imageNumber > startingImage){
+        document.getElementById('next-image').classList.add('moved-next-image')
+        document.getElementById('previous-image').classList.add('moved-next-image')
+    }
 
     function displayNewImageInFrame (displayedImageNumber) {
         console.log('displaying image '+displayedImageNumber)
@@ -117,16 +124,16 @@ let previousImage = document.getElementById('previous-image')
 previousButton.addEventListener('click',()=>{
     if (currentlyDisplayedImage>0){
         console.log("previous image button clicked")
-        document.getElementById('previous-image').classList.add('moved-previous-image')
-        document.getElementById('next-image').classList.add('moved-previous-image')
+        // document.getElementById('previous-image').classList.add('moved-previous-image')
+        // document.getElementById('next-image').classList.add('moved-previous-image')
         //currentlyDisplayedImage--
         updateImage(currentlyDisplayedImage-1)
     }
 })
 nextButton.addEventListener('click',()=>{
     if (currentlyDisplayedImage<images.length-1){
-        document.getElementById('next-image').classList.add('moved-next-image')
-        document.getElementById('previous-image').classList.add('moved-next-image')
+        // document.getElementById('next-image').classList.add('moved-next-image')
+        // document.getElementById('previous-image').classList.add('moved-next-image')
         //currentlyDisplayedImage++
         updateImage(currentlyDisplayedImage+1)
     }

@@ -1,5 +1,4 @@
-
-//animate also the underlying farther images
+//remove imagelack errors
 //make some kind of animation for when jumping multiple images at a time
 
 
@@ -36,11 +35,50 @@ function updateImage (imageNumber){
     console.log("update image runs")
     let startingImage = currentlyDisplayedImage
     if (imageNumber < startingImage){
-        document.getElementById('previous-image').classList.add('moved-previous-image')
-        document.getElementById('next-image').classList.add('moved-previous-image')
+        animateMovingBackward()
     } else if (imageNumber > startingImage){
+        animateMovingForward()
+    }
+
+    function animateMovingForward(){
         document.getElementById('next-image').classList.add('moved-next-image')
+        document.getElementById('current-image').classList.add('moved-next-image')
         document.getElementById('previous-image').classList.add('moved-next-image')
+        document.getElementById('outside-next-next-image').setAttribute('id', 'next-next-image')
+        
+        //document.getElementById('next-next-image').classList.add('moved-next-image')
+    }
+
+    function animateMovingBackward(){
+        document.getElementById('previous-image').classList.add('moved-previous-image')
+        document.getElementById('current-image').classList.add('moved-previous-image')
+        document.getElementById('next-image').classList.add('moved-previous-image')
+        //document.getElementById('previous-previous-image').classList.add('moved-previous-image')
+        document.getElementById('outside-previous-previous-image').setAttribute('id', 'previous-previous-image')
+
+    }
+
+    
+    function displayAnotherImageFurtherDownTheListUnderTheNextOrPreviousOne (whichOne, number) {//'next' or 'previous' - the image itself will be next-next or previous-previous
+        let frameOfImageToBeDisplayed = document.getElementById(`${whichOne}-image-frame`)
+        if (document.getElementById(`${whichOne}-${whichOne}-image`)){
+            document.getElementById(`${whichOne}-${whichOne}-image`).remove()
+        } else if (document.getElementById(`outside-${whichOne}-${whichOne}-image`)){
+            document.getElementById(`outside-${whichOne}-${whichOne}-image`).remove()
+        }
+
+        let imageToBeDisplayed = document.createElement('img')
+        imageToBeDisplayed.setAttribute('id', `outside-${whichOne}-${whichOne}-image`)
+        //imageToBeDisplayed.setAttribute('id', `${whichOne}-${whichOne}-image`)
+        if (whichOne === 'previous' && number > 1){//previous-previous
+                imageToBeDisplayed.setAttribute('src', `images/${images[number-2]}`)
+        } else if (whichOne === 'next' && number < (images.length-2)){//next-next
+            imageToBeDisplayed.setAttribute('src', `images/${images[number+2]}`)
+        } else (
+            imageToBeDisplayed.setAttribute('class', 'hidden')
+        )
+        frameOfImageToBeDisplayed.prepend(imageToBeDisplayed)
+
     }
 
     function displayNewImageInFrame (displayedImageNumber) {
@@ -51,6 +89,8 @@ function updateImage (imageNumber){
         //displayPreviousAndNextImage()
         displayPreviousOrNextImage('previous', displayedImageNumber)
         displayPreviousOrNextImage('next', displayedImageNumber)
+        displayAnotherImageFurtherDownTheListUnderTheNextOrPreviousOne('previous', displayedImageNumber)
+        displayAnotherImageFurtherDownTheListUnderTheNextOrPreviousOne('next', displayedImageNumber)
         let image = `images/${images[displayedImageNumber]}`
         const frame = document.getElementById("frame")
         removeAllChildren(frame)
@@ -111,30 +151,16 @@ const nextImageFrame = document.getElementById('next-image-frame')
 let nextImage = document.getElementById('next-image')
 let previousImage = document.getElementById('previous-image')
 
-// function crementImageAndApplyProperAnimationClass (isTheDirectionForward) {//this is not currently used
-//     isTheDirectionForward
-//     ? (currentlyDisplayedImage++,
-//       document.getElementById('next-image').classList.add('moved-next-image'),
-//       document.getElementById('previous-image').classList.add('moved-next-image'))
-//     : (currentlyDisplayedImage--,
-//       document.getElementById('previous-image').classList.add('moved-previous-image'),
-//       document.getElementById('next-image').classList.add('moved-previous-image'))
-// }
+
 
 previousButton.addEventListener('click',()=>{
     if (currentlyDisplayedImage>0){
         console.log("previous image button clicked")
-        // document.getElementById('previous-image').classList.add('moved-previous-image')
-        // document.getElementById('next-image').classList.add('moved-previous-image')
-        //currentlyDisplayedImage--
         updateImage(currentlyDisplayedImage-1)
     }
 })
 nextButton.addEventListener('click',()=>{
     if (currentlyDisplayedImage<images.length-1){
-        // document.getElementById('next-image').classList.add('moved-next-image')
-        // document.getElementById('previous-image').classList.add('moved-next-image')
-        //currentlyDisplayedImage++
         updateImage(currentlyDisplayedImage+1)
     }
 })

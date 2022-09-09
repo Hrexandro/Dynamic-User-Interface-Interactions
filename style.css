@@ -125,7 +125,7 @@ a {
 #current-image {
     width: 50vw;
     height: 50vh;
-    transition: all 1.9s ease-in;
+    transition: all 0.9s ease-in;
     /* height: 100%;
     width:100%; */
 }
@@ -167,23 +167,53 @@ img {
     
 }
 
-#next-next-image, #previous-previous-image {
-  z-index: -1;
+#next-next-image {
+  /* z-index: -1; */
   position: absolute;
   top: 0;
   left: 0;
+  transition: all 0.9s ease-in;
   /* transform: translate(0, -10vh); */
+  /* transform: translate(57.5vw, 0); */
 }
+#previous-previous-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transition: all 0.9s ease-in;
+  /* transform: translate(-57.5vw, 0); */
+
+}
+
+#outside-next-next-image {
+    /* transition: all 0.9s ease-in; */
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: translate(57.5vw, 0);
+  }
+
+#outside-previous-previous-image {
+    /* transition: all 0.9s ease-in; */
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: translate(-57.5vw, 0);
+  
+}
+
 
 
 
 .moved-next-image {
     /* transform: translate(50vw, 10vh); */
     transform: translate(-57.5vw, 0);
+    z-index: 999;
 
   }
 .moved-previous-image {
     transform: translate(57.5vw, 0);
+    z-index: 999;
 
   }
 .moved-current-image {

@@ -1,4 +1,3 @@
-//remove imagelack errors
 //make some kind of animation for when jumping multiple images at a time
 //make it handle drags on mobile
 //make it look presentable on mobile (vertical)
@@ -106,22 +105,35 @@ function updateImage (imageNumber){
         currentlyDisplayedImage = displayedImageNumber
     }
 
+    typeof foo === 'undefined'
     let changes = imageNumber-currentlyDisplayedImage //going forward is positive, going backwards is negative number
     if (currentlyDisplayedImage !== imageNumber){
-        console.log(currentlyDisplayedImage !== imageNumber)
-        console.log('changes is'+changes)
+        // console.log(currentlyDisplayedImage !== imageNumber)
+        // console.log('changes is'+changes)
         if (changes < -1){//backwards
-            for (let k = 0; k >= changes; k--){
-                    displayNewImageInFrame(startingImage-(-k))
-                    document.getElementById('next-image').classList.remove('moved-next-image')
-                    document.getElementById('previous-image').classList.remove('moved-previous-image')
-            }
+            // for (let k = 0; k >= changes; k--){
+            //         displayNewImageInFrame(startingImage-(-k))
+            //         document.getElementById('next-image').classList.remove('moved-next-image')
+            //         document.getElementById('previous-image').classList.remove('moved-previous-image')
+            // }
+            setTimeout(function() {
+                updateImage(changes+1)
+                displayNewImageInFrame(startingImage-1)
+                document.getElementById('next-image').classList.remove('moved-next-image')
+                document.getElementById('previous-image').classList.remove('moved-previous-image')
+                }, 900);
         } else if (changes > 1){//forward
-            for (let k = 0; k <= changes; k++){
-                    displayNewImageInFrame(startingImage+k)
-                    document.getElementById('next-image').classList.remove('moved-next-image')
-                    document.getElementById('previous-image').classList.remove('moved-previous-image')
-            }
+            // for (let k = 0; k <= changes; k++){
+            //         displayNewImageInFrame(startingImage+k)
+            //         document.getElementById('next-image').classList.remove('moved-next-image')
+            //         document.getElementById('previous-image').classList.remove('moved-previous-image')
+            // }
+            setTimeout(function() {
+                updateImage(changes-1)
+                displayNewImageInFrame(currentlyDisplayedImage+1)
+                document.getElementById('next-image').classList.remove('moved-next-image')
+                document.getElementById('previous-image').classList.remove('moved-previous-image')
+                }, 900);
         } else {}
             setTimeout(function() {
             displayNewImageInFrame(imageNumber)

@@ -1,5 +1,7 @@
 //remove imagelack errors
 //make some kind of animation for when jumping multiple images at a time
+//make it handle drags on mobile
+//make it look presentable on mobile (vertical)
 
 
 function removeAllChildren(element) {
@@ -104,10 +106,6 @@ function updateImage (imageNumber){
         currentlyDisplayedImage = displayedImageNumber
     }
 
-    // displayAnotherImageFurtherDownTheListUnderTheNextOrPreviousOne ('next')//these have to appear before so there is something under when animation happens
-    // displayAnotherImageFurtherDownTheListUnderTheNextOrPreviousOne ('previous')
-    //let changes = Math.abs(imageNumber-currentlyDisplayedImage)
-
     let changes = imageNumber-currentlyDisplayedImage //going forward is positive, going backwards is negative number
     if (currentlyDisplayedImage !== imageNumber){
         console.log(currentlyDisplayedImage !== imageNumber)
@@ -117,9 +115,7 @@ function updateImage (imageNumber){
                     displayNewImageInFrame(startingImage-(-k))
                     document.getElementById('next-image').classList.remove('moved-next-image')
                     document.getElementById('previous-image').classList.remove('moved-previous-image')
-
             }
-
         } else if (changes > 1){//forward
             for (let k = 0; k <= changes; k++){
                     displayNewImageInFrame(startingImage+k)
@@ -133,7 +129,6 @@ function updateImage (imageNumber){
             document.getElementById('previous-image').classList.remove('moved-previous-image')
 
             }, 900);
-
     } else {//starting state
         displayNewImageInFrame(imageNumber)
     }
@@ -176,8 +171,7 @@ function displayPreviousOrNextImage (whichOne, number) {//'next' or 'previous', 
     if (whichOne === 'previous'){
         if (number === 0){// show hidden so that their position stays the same regardless of displaying
             imageToBeDisplayed.setAttribute('class', 'hidden')
-        }
-        else {
+        } else {
             imageToBeDisplayed.setAttribute('src', `images/${images[number-1]}`)
         }
     } else {// so next
@@ -189,31 +183,6 @@ function displayPreviousOrNextImage (whichOne, number) {//'next' or 'previous', 
     }
     frameOfImageToBeDisplayed.appendChild(imageToBeDisplayed)
 }
-
-// function displayAnotherImageFurtherDownTheListUnderTheNextOrPreviousOne (whichOne) {//'next' or 'previous' - the image itself will be next-next or previous-previous
-//     let frameOfImageToBeDisplayed = document.getElementById(`${whichOne}-image-frame`)
-//     if (document.getElementById(`${whichOne}-${whichOne}-image`)){
-//         document.getElementById(`${whichOne}-${whichOne}-image`).remove()
-//     }
-//     let imageToBeDisplayed = document.createElement('img')
-//     imageToBeDisplayed.setAttribute('id', `${whichOne}-${whichOne}-image`)
-//     if (whichOne === 'previous'){//previous-previous
-//         if (currentlyDisplayedImage === 0){// show hidden so that their position stays the same regardless of displaying
-//             imageToBeDisplayed.setAttribute('class', 'hidden')
-//         }
-//         else {
-//             imageToBeDisplayed.setAttribute('src', `images/${images[currentlyDisplayedImage-2]}`)
-//         }
-//     } else if (whichOne === 'next'){//next-next
-//         if (currentlyDisplayedImage>=images.length-2){
-//             imageToBeDisplayed.setAttribute('class', 'hidden')
-//         } else {
-//             imageToBeDisplayed.setAttribute('src', `images/${images[currentlyDisplayedImage+2]}`)
-//         }
-//     }
-//     frameOfImageToBeDisplayed.prepend(imageToBeDisplayed)
-
-// }
 
 function createNavigationDots () {
     for (let i = 0; i < images.length; i++){
@@ -230,9 +199,7 @@ function createNavigationDots () {
 }
 
 createNavigationDots()
-displayPreviousOrNextImage('previous', currentlyDisplayedImage-1)
-displayPreviousOrNextImage('next', currentlyDisplayedImage+1)
+displayPreviousOrNextImage('previous', currentlyDisplayedImage)
+displayPreviousOrNextImage('next', currentlyDisplayedImage)
 updateImage(currentlyDisplayedImage, 0)
 // startAutoView()
-
-

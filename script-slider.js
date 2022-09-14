@@ -1,4 +1,5 @@
-//make some kind of animation for when jumping multiple images at a time
+//make some kind of animation for when jumping multiple images at a time - animated but only once and then jumps to the final image!!!
+
 //make it handle drags on mobile
 //make it look presentable on mobile (vertical)
 
@@ -31,6 +32,7 @@ function startAutoView () {
         startAutoView()
           }, 5000);
 }
+
 
 function updateImage (imageNumber){   
     console.log("update image runs")
@@ -99,48 +101,56 @@ function updateImage (imageNumber){
         imageElement.setAttribute('id', 'current-image')
         imageElement.setAttribute('src', image)
         frame.appendChild(imageElement)
-        console.log(displayedImageNumber)
+        console.log('displayed image is '+displayedImageNumber)
         document.getElementById(displayedImageNumber).classList.add('current-dot')
 
         currentlyDisplayedImage = displayedImageNumber
     }
 
-    typeof foo === 'undefined'
     let changes = imageNumber-currentlyDisplayedImage //going forward is positive, going backwards is negative number
+    console.log('imageNumber-currentlyDisplayedImage')
+    console.log(`${imageNumber}-${currentlyDisplayedImage}`)
+    console.log("creating changes variable = "+changes)
     if (currentlyDisplayedImage !== imageNumber){
         // console.log(currentlyDisplayedImage !== imageNumber)
         // console.log('changes is'+changes)
         if (changes < -1){//backwards
+            console.log("changes < -1 - moving backwards")
             // for (let k = 0; k >= changes; k--){
             //         displayNewImageInFrame(startingImage-(-k))
             //         document.getElementById('next-image').classList.remove('moved-next-image')
             //         document.getElementById('previous-image').classList.remove('moved-previous-image')
             // }
             setTimeout(function() {
-                updateImage(changes+1)
+                updateImage(changes)
                 displayNewImageInFrame(startingImage-1)
                 document.getElementById('next-image').classList.remove('moved-next-image')
                 document.getElementById('previous-image').classList.remove('moved-previous-image')
                 }, 900);
         } else if (changes > 1){//forward
+            console.log("changes > 1 - moving forwards")
             // for (let k = 0; k <= changes; k++){
             //         displayNewImageInFrame(startingImage+k)
             //         document.getElementById('next-image').classList.remove('moved-next-image')
             //         document.getElementById('previous-image').classList.remove('moved-previous-image')
             // }
             setTimeout(function() {
-                updateImage(changes-1)
-                displayNewImageInFrame(currentlyDisplayedImage+1)
                 document.getElementById('next-image').classList.remove('moved-next-image')
                 document.getElementById('previous-image').classList.remove('moved-previous-image')
+                displayNewImageInFrame(startingImage+1)//before updateImage it makes it flip back on the last but only if you jump more than 2 at a time
+                updateImage(changes)
                 }, 900);
-        } else {}
+        } else {
+            console.log("moving by one image")
+            console.log(`the changes variable equals ${changes}`)
+            console.log(`imageNumber - the image to be displayed equals ${imageNumber}`)
             setTimeout(function() {
             displayNewImageInFrame(imageNumber)
             document.getElementById('next-image').classList.remove('moved-next-image')
             document.getElementById('previous-image').classList.remove('moved-previous-image')
 
             }, 900);
+        }
     } else {//starting state
         displayNewImageInFrame(imageNumber)
     }

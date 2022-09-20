@@ -1,7 +1,6 @@
-//make the animation when jumping multiple ones faster
-
+//make buttons inactive if animation is in progress
 //make it handle drags on mobile
-//make it look presentable on mobile (vertical)
+
 
 
 function removeAllChildren(element) {
@@ -14,6 +13,7 @@ function removeAllChildren(element) {
 }
 
 let direction = 'forward'
+let animationInProgress = false
 
 function startAutoView () {
     setTimeout(function() {
@@ -47,6 +47,7 @@ function updateImage (imageNumber){
     }
 
     function animateMovingForward(){
+        animationInProgress = true
         document.getElementById('next-image').classList.add('moved-next-image')
         document.getElementById('current-image').classList.add('moved-next-image')
         document.getElementById('previous-image').classList.add('moved-next-image')
@@ -56,6 +57,7 @@ function updateImage (imageNumber){
     }
 
     function animateMovingBackward(){
+        animationInProgress = true
         document.getElementById('previous-image').classList.add('moved-previous-image')
         document.getElementById('current-image').classList.add('moved-previous-image')
         document.getElementById('next-image').classList.add('moved-previous-image')
@@ -111,7 +113,7 @@ function updateImage (imageNumber){
         currentlyDisplayedImage = displayedImageNumber
     }
 
-    if (finalTargetImage !== null){ //tweak that shit -no animation, the dots are highlighted one lower than they should
+    if (finalTargetImage !== null){
         console.log("there is a finalTargetImage, startingImage is "+startingImage)
         if (finalTargetImage > startingImage){//forward
             setTimeout(function() {
@@ -139,12 +141,8 @@ function updateImage (imageNumber){
                 console.log("the timeout resetting finalTargetImage runs")
 
                 finalTargetImage = null //reset
+                animationInProgress = false
                 }, 900);
-            // setTimeout(function() {
-            // displayNewImageInFrame(imageNumber)
-            // document.getElementById('next-image').classList.remove('moved-next-image')
-            // document.getElementById('previous-image').classList.remove('moved-previous-image')
-            // }, 900);
         }
 
     } else if (currentlyDisplayedImage !== imageNumber){//moving by one position
@@ -154,61 +152,13 @@ function updateImage (imageNumber){
             displayNewImageInFrame(imageNumber)
             document.getElementById('next-image').classList.remove('moved-next-image')
             document.getElementById('previous-image').classList.remove('moved-previous-image')
+            animationInProgress = false
             }, 900);
     } else {//starting state
         console.log('starting display')
         displayNewImageInFrame(imageNumber)
     }
 
-
-    //commented out the part below, trying for a total rewrite
-    // let changes = imageNumber-currentlyDisplayedImage //going forward is positive, going backwards is negative number
-    // console.log('imageNumber-currentlyDisplayedImage')
-    // console.log(`${imageNumber}-${currentlyDisplayedImage}`)
-    // console.log("creating changes variable = "+changes)
-    // if (currentlyDisplayedImage !== imageNumber){
-    //     // console.log(currentlyDisplayedImage !== imageNumber)
-    //     // console.log('changes is'+changes)
-    //     if (changes < -1){//backwards
-    //         console.log("changes < -1 - moving backwards")
-    //         // for (let k = 0; k >= changes; k--){
-    //         //         displayNewImageInFrame(startingImage-(-k))
-    //         //         document.getElementById('next-image').classList.remove('moved-next-image')
-    //         //         document.getElementById('previous-image').classList.remove('moved-previous-image')
-    //         // }
-    //         setTimeout(function() {
-    //             updateImage(changes)
-    //             displayNewImageInFrame(startingImage-1)
-    //             document.getElementById('next-image').classList.remove('moved-next-image')
-    //             document.getElementById('previous-image').classList.remove('moved-previous-image')
-    //             }, 900);
-    //     } else if (changes > 1){//forward
-    //         console.log("changes > 1 - moving forwards")
-    //         // for (let k = 0; k <= changes; k++){
-    //         //         displayNewImageInFrame(startingImage+k)
-    //         //         document.getElementById('next-image').classList.remove('moved-next-image')
-    //         //         document.getElementById('previous-image').classList.remove('moved-previous-image')
-    //         // }
-    //         setTimeout(function() {
-    //             document.getElementById('next-image').classList.remove('moved-next-image')
-    //             document.getElementById('previous-image').classList.remove('moved-previous-image')
-    //             displayNewImageInFrame(startingImage+1)//before updateImage it makes it flip back on the last but only if you jump more than 2 at a time
-    //             updateImage(changes)
-    //             }, 900);
-    //     } else {
-    //         console.log("moving by one image")
-    //         console.log(`the changes variable equals ${changes}`)
-    //         console.log(`imageNumber - the image to be displayed equals ${imageNumber}`)
-    //         setTimeout(function() {
-    //         displayNewImageInFrame(imageNumber)
-    //         document.getElementById('next-image').classList.remove('moved-next-image')
-    //         document.getElementById('previous-image').classList.remove('moved-previous-image')
-
-    //         }, 900);
-    //     }
-    // } else {//starting state
-    //     displayNewImageInFrame(imageNumber)
-    // }
 }
 
 let currentlyDisplayedImage = 0
@@ -226,13 +176,13 @@ let previousImage = document.getElementById('previous-image')
 
 
 previousButton.addEventListener('click',()=>{
-    if (currentlyDisplayedImage>0){
+    if (currentlyDisplayedImage>0 && !animationInProgress){
         console.log("previous image button clicked")
         updateImage(currentlyDisplayedImage-1)
     }
 })
 nextButton.addEventListener('click',()=>{
-    if (currentlyDisplayedImage<images.length-1){
+    if (currentlyDisplayedImage<images.length-1 && !animationInProgress){
         updateImage(currentlyDisplayedImage+1)
     }
 })
@@ -268,11 +218,11 @@ function createNavigationDots () {
         navigationDot.setAttribute('id', `${i}`)
         document.getElementById('navigation-dots-container').appendChild(navigationDot)
         navigationDot.addEventListener('click',()=>{
-            finalTargetImage = i
-            console.log('finalTargetImage is '+finalTargetImage)
-            updateImage(i)
-            
-
+            if (!animationInProgress){
+                finalTargetImage = i
+                console.log('finalTargetImage is '+finalTargetImage)
+                updateImage(i)
+            }
         })
 
     }

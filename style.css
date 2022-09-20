@@ -82,9 +82,6 @@ a {
     /* align-items: center; */
 }
 
-#image-changing-buttons-container {
-    
-}
 
 #navigation-dots-container {
     display: flex;
@@ -126,31 +123,19 @@ a {
     width: 50vw;
     height: 50vh;
     transition: all 0.9s ease-in;
-    /* height: 100%;
-    width:100%; */
 }
 #next-image {
     width: 50vw;
     height: 50vh;
-    /* transform: translate(0, -10vh); */
     transition: all 0.9s ease-in;
     z-index: 999;
-    /* position: relative;
-    right: -30vw;
-    bottom: 65vh;
-    transition: all 1.9s ease-in; */ 
 }
 
 #previous-image {
     width: 50vw;
     height: 50vh;
     z-index: 999;
-    /* transform: translate(0, -10vh); */
     transition: all 0.9s ease-in;
-    /* position: relative;
-    left: -30vw;
-    bottom: 65vh; */
-
 }
 
 img {
@@ -168,25 +153,20 @@ img {
 }
 
 #next-next-image {
-  /* z-index: -1; */
   position: absolute;
   top: 0;
   left: 0;
   transition: all 0.9s ease-in;
-  /* transform: translate(0, -10vh); */
-  /* transform: translate(57.5vw, 0); */
 }
 #previous-previous-image {
   position: absolute;
   top: 0;
   left: 0;
   transition: all 0.9s ease-in;
-  /* transform: translate(-57.5vw, 0); */
 
 }
 
 #outside-next-next-image {
-    /* transition: all 0.9s ease-in; */
     position: absolute;
     top: 0;
     left: 0;
@@ -194,7 +174,6 @@ img {
   }
 
 #outside-previous-previous-image {
-    /* transition: all 0.9s ease-in; */
     position: absolute;
     top: 0;
     left: 0;
@@ -206,7 +185,6 @@ img {
 
 
 .moved-next-image {
-    /* transform: translate(50vw, 10vh); */
     transform: translate(-57.5vw, 0);
     z-index: 999;
 
@@ -217,5 +195,35 @@ img {
 
   }
 .moved-current-image {
+
+}
+
+@media only screen and (max-width: 1024px) {
+    #current-image {
+        width: 50vw;
+        height: 50vw;
+        transition: all 0.9s ease-in;
+    }
+    #next-image {
+        width: 50vw;
+        height: 50vw;
+        transition: all 0.9s ease-in;
+        z-index: 999;
+    }
+    
+    #previous-image {
+        width: 50vw;
+        height: 50vw;
+        z-index: 999;
+        transition: all 0.9s ease-in;
+    }
+    
+    img {
+        width: 50vw;
+        height: 50vw; 
+    }
+    
+    
+
 
 }

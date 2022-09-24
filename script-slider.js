@@ -1,7 +1,5 @@
-//make buttons inactive if animation is in progress
 //make it handle drags on mobile
-
-
+//add that snap changer
 
 function removeAllChildren(element) {
     let counter = element.children.length;
@@ -14,10 +12,15 @@ function removeAllChildren(element) {
 
 let direction = 'forward'
 let animationInProgress = false
+let autoViewOn = false
 
 function startAutoView () {
-    setTimeout(function() {
-        if (currentlyDisplayedImage === 0){
+    let autoView = setTimeout(function() {
+        if (autoViewOn === false){
+            clearTimeout(autoView)
+            direction = 'forward'
+            return false;
+        } else if (currentlyDisplayedImage === 0){
             direction = 'forward'
         } else if (currentlyDisplayedImage>=images.length-1) {
             direction = 'backward'
@@ -28,21 +31,22 @@ function startAutoView () {
         } else if (direction === 'backward'){
             //currentlyDisplayedImage--
             updateImage(currentlyDisplayedImage-1)
-        }
+        } 
         startAutoView()
-          }, 5000);
+          }, 4000);
 }
+
 
 let finalTargetImage = null
 
 function updateImage (imageNumber){   
-    console.log("update image runs with "+imageNumber+ ' as imageNumber, currentlyDisplayedImage is '+currentlyDisplayedImage)
+    //console.log("update image runs with "+imageNumber+ ' as imageNumber, currentlyDisplayedImage is '+currentlyDisplayedImage)
     let startingImage = currentlyDisplayedImage
     if (imageNumber < startingImage){
-        console.log('animating moving backward')
+        //console.log('animating moving backward')
         animateMovingBackward()
     } else if (imageNumber > startingImage){
-        console.log('animating moving forward')
+        //console.log('animating moving forward')
         animateMovingForward()
     }
 
@@ -90,7 +94,7 @@ function updateImage (imageNumber){
     }
 
     function displayNewImageInFrame (displayedImageNumber) {
-        console.log('displaying image '+displayedImageNumber)
+        //console.log('displaying image '+displayedImageNumber)
         Array.from(document.getElementsByClassName('navigation-dot')).forEach((dot)=>{
             dot.classList.remove('current-dot')
         })
@@ -106,18 +110,18 @@ function updateImage (imageNumber){
         imageElement.setAttribute('id', 'current-image')
         imageElement.setAttribute('src', image)
         frame.appendChild(imageElement)
-        console.log('displayed image is '+displayedImageNumber)
+        //console.log('displayed image is '+displayedImageNumber)
         document.getElementById(displayedImageNumber).classList.add('current-dot')
-        console.log(document.getElementById(displayedImageNumber))
-        console.log('currentlyDisplayedImage is '+currentlyDisplayedImage+' and now will be '+ displayedImageNumber)
+        //console.log(document.getElementById(displayedImageNumber))
+        //console.log('currentlyDisplayedImage is '+currentlyDisplayedImage+' and now will be '+ displayedImageNumber)
         currentlyDisplayedImage = displayedImageNumber
     }
 
     if (finalTargetImage !== null){
-        console.log("there is a finalTargetImage, startingImage is "+startingImage)
+        //console.log("there is a finalTargetImage, startingImage is "+startingImage)
         if (finalTargetImage > startingImage){//forward
             setTimeout(function() {
-                console.log('forward timeout Starts with startingimage as' + startingImage)
+                //console.log('forward timeout Starts with startingimage as' + startingImage)
                 displayNewImageInFrame(startingImage+1)
                 document.getElementById('next-image').classList.remove('moved-next-image')
                 document.getElementById('previous-image').classList.remove('moved-previous-image')
@@ -136,9 +140,9 @@ function updateImage (imageNumber){
                 }, 900);
         }
          else {//all the moves have been done, clear finalTargetImage
-            console.log('final iteration, just clear')
+            //console.log('final iteration, just clear')
             setTimeout(function() {
-                console.log("the timeout resetting finalTargetImage runs")
+                //console.log("the timeout resetting finalTargetImage runs")
 
                 finalTargetImage = null //reset
                 animationInProgress = false
@@ -146,7 +150,7 @@ function updateImage (imageNumber){
         }
 
     } else if (currentlyDisplayedImage !== imageNumber){//moving by one position
-        console.log("there is no finalTargetImage - just moving one at a time")
+        //console.log("there is no finalTargetImage - just moving one at a time")
         finalTargetImage = null //reset after moving
             setTimeout(function() {
             displayNewImageInFrame(imageNumber)
@@ -155,7 +159,7 @@ function updateImage (imageNumber){
             animationInProgress = false
             }, 900);
     } else {//starting state
-        console.log('starting display')
+        //console.log('starting display')
         displayNewImageInFrame(imageNumber)
     }
 
@@ -177,7 +181,7 @@ let previousImage = document.getElementById('previous-image')
 
 previousButton.addEventListener('click',()=>{
     if (currentlyDisplayedImage>0 && !animationInProgress){
-        console.log("previous image button clicked")
+        //console.log("previous image button clicked")
         updateImage(currentlyDisplayedImage-1)
     }
 })
@@ -220,7 +224,7 @@ function createNavigationDots () {
         navigationDot.addEventListener('click',()=>{
             if (!animationInProgress){
                 finalTargetImage = i
-                console.log('finalTargetImage is '+finalTargetImage)
+                //console.log('finalTargetImage is '+finalTargetImage)
                 updateImage(i)
             }
         })
@@ -228,6 +232,21 @@ function createNavigationDots () {
     }
 
 }
+
+const autoViewToggle = document.getElementById('auto-view-toggle')
+
+autoViewToggle.addEventListener('click', ()=>{
+    console.log(autoViewToggle.checked)
+    if (autoViewToggle.checked){
+        autoViewOn = true
+        startAutoView()
+        animationInProgress = true
+    } else {
+        autoViewOn = false
+        animationInProgress = false
+        console.log('autoviewon is ' +autoViewOn)
+    }
+})
 
 createNavigationDots()
 displayPreviousOrNextImage('previous', currentlyDisplayedImage)
